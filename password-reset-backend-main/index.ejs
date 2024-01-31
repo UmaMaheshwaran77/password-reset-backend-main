@@ -1,0 +1,71 @@
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+ <div class ="container">  
+<form method="put" action="/reset-password/<%= encodeURIComponent(token) %>">
+   
+
+    <input type="text" name="password" id="password" placeholder="password"><br/>
+    <input type="text" name="confirmPassword" id="confirmPassword" placeholder="confirmPassword"><br/>
+    <button type="submit">Submit</button>
+</form>
+</div> 
+</body>
+</html>
+ -->
+
+
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <form id="resetPasswordForm">
+            <!-- Add a hidden input field to store the token -->
+            <input type="hidden" name="token" id="token" value="<%= token %>">
+            <input type="text" name="password" id="password" placeholder="password"><br/>
+            <input type="text" name="confirmPassword" id="confirmPassword" placeholder="confirmPassword"><br/>
+            <button type="button" onclick="resetPassword()">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        async function resetPassword() {
+            const token = document.getElementById('token').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            try {
+                const response = await fetch(`/reset-password/${encodeURIComponent(token)}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        password: password,
+                        confirmPassword: confirmPassword
+                    })
+                });
+
+                const data = await response.json();
+                console.log(data);
+
+                // Handle the response accordingly, e.g., redirect to a login page
+            } catch (error) {
+                console.error('Error resetting password:', error);
+                // Handle the error, e.g., show an error message to the user
+            }
+        }
+    </script>
+</body>
+</html>
